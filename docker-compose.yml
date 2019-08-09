@@ -1,0 +1,19 @@
+version: '3' # specify docker-compose version
+#Define the services/containers to be run
+services:
+  angular: #name of the first service
+    build: angular #specify the directory of the Dockerfile
+    ports:
+      - '4200:4200' #specify port mapping
+  api: #name of the second service
+    build: api #specify the directory of the Dockerfile
+    ports:
+      - '4201:4201'
+      - '80:80' #specify ports mapping
+    links:
+      - database #link this service to the database service
+  database: #name of the service
+    image: mongo #specify the image to build container from
+    command: mongod --port 4202
+    ports:
+      - '4202:4202' #specify the port forwarding

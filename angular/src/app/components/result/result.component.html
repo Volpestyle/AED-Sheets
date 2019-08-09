@@ -1,0 +1,84 @@
+<div class="card-deck mb-5">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-sm-auto text-left header-date">
+          <span class="font-weight-bold">Submitted By:</span>
+          {{ result.submittedBy }}
+        </div>
+        <div class="col-sm-6 text-left">
+          {{ utilService.formatDate(result.date) }}
+        </div>
+      </div>
+      <hr *ngIf="result.modifiedBy" />
+      <div class="row" *ngIf="result.modifiedBy">
+        <div class="col-sm-auto text-left header-date">
+          <span class="font-weight-bold">Modified By:</span>
+          {{ result.modifiedBy }}
+        </div>
+        <div class="col-sm-6 text-left">
+          {{ utilService.formatDate(result.modifiedAt) }}
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="flex">
+          <li class="list-group-item" *ngFor="let i of info">
+            <span class="font-weight-bold" *ngIf="!isEditing; else editing"
+              >{{ i.title }}:
+            </span>
+            {{ i.value }}
+          </li>
+        </div>
+        <div class="col-sm-6">
+          <ul class="list-group"></ul>
+        </div>
+      </div>
+      <div class="card-description" *ngIf="result.eTag">
+        <h6 class="font-weight-bold mt-3">E-Tag:</h6>
+        <p class="card-text">{{ result.eTag }}</p>
+      </div>
+      <div class="card-description">
+        <h6 class="font-weight-bold mt-3">Description:</h6>
+        <p class="card-text mt-2 pb-2">
+          {{ result.entry }}
+        </p>
+      </div>
+      <div *ngIf="result.attachment">
+        <hr />
+        <button
+          class="btn btn-primary btn-sm my-1"
+          (click)="downloadAttachment(result.attachment)"
+        >
+          See Attachment <i class="fas fa-paperclip ml-1"></i>
+        </button>
+        <hr />
+      </div>
+
+      <div class="card-notes" *ngIf="rolesService.auths.get('addNote')">
+        <app-entry-notes
+          [entryId]="result._id"
+          [notes]="result.notes"
+        ></app-entry-notes>
+        <hr />
+      </div>
+      <div class="btns">
+        <button
+          class="btn btn-primary btn-sm"
+          (click)="openEditModal()"
+          *ngIf="rolesService.auths.get('editEntry')"
+        >
+          Edit Entry <i class="fas fa-edit ml-1"></i>
+        </button>
+        <button
+          class="btn btn-danger btn-sm ml-2"
+          (click)="deleteEntry()"
+          *ngIf="rolesService.auths.get('deleteEntry')"
+        >
+          Delete Entry <i class="fas fa-trash-alt ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

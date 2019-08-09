@@ -1,0 +1,294 @@
+<div class="row h-100" *ngIf="lookupsService.sortedVals">
+  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+      <h5 class="pt-3">Add Filters</h5>
+      <div class="form-group">
+        <label for="inputTechName" class="col-form-label text-right"
+          >Tech Name:</label
+        >
+        <ng-multiselect-dropdown
+          id="inputTechName"
+          [placeholder]="'None'"
+          [data]="techNames"
+          [(ngModel)]="techNameModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">Location:</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'None'"
+          [data]="lookupsService.sortedVals.location"
+          [(ngModel)]="locationModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">Show:</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'None'"
+          [data]="lookupsService.sortedVals.show"
+          [(ngModel)]="showModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">Classification:</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'None'"
+          [data]="lookupsService.sortedVals.classification"
+          [(ngModel)]="classModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">What was heard on air:</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'None'"
+          [data]="lookupsService.sortedVals.heardOnAir"
+          [(ngModel)]="heardOnAirModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">Action taken by drive tech:</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'None'"
+          [data]="lookupsService.sortedVals.actionTaken"
+          [(ngModel)]="actionTakenModel"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">{{ isEditingDuration ? "Duration (in seconds):" : "Duration:"}}</label>
+        <select
+          class="custom-select"
+          [(ngModel)]="durationModel"
+          *ngIf="!isEditingDuration"
+        >
+          <option value="{{ {} }}" selected>None</option>
+          <option
+            [ngValue]="value.val"
+            *ngFor="let value of lookupsService.sortedVals.duration"
+          >
+            {{ value.title }}</option
+          >
+        </select>
+
+        <div *ngIf="isEditingDuration">
+          <input
+            class="form-control mt-2"
+            type="text"
+            [(ngModel)]="durationModel.gte"
+          />
+          to
+          <input
+            class="form-control"
+            type="text"
+            [(ngModel)]="durationModel.lte"
+          />
+        </div>
+        <button
+          class="btn btn-sm btn-secondary mt-2"
+          (click)="isEditingDuration = !isEditingDuration"
+        >
+          {{ !isEditingDuration ? 'Edit' : 'Close' }}
+        </button>
+      </div>
+      <div class="form-group form-inline">
+        <label class="col-form-label">On Air:</label>
+        <div
+          class="btn-group btn-group-toggle"
+          ngbRadioGroup
+          name="onAir"
+          [(ngModel)]="onAirModel"
+        >
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="null" /> Any
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="true" /> Yes
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="false" /> No
+          </label>
+        </div>
+      </div>
+      <div class="form-group form-inline">
+        <label class="col-form-label">Funder:</label>
+        <div
+          class="btn-group btn-group-toggle"
+          ngbRadioGroup
+          name="funder"
+          [(ngModel)]="funderModel"
+        >
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="null" /> Any
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="true" /> Yes
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="false" /> No
+          </label>
+        </div>
+      </div>
+      <div class="form-group form-inline">
+        <label class="col-form-label">IT Service Ticket Created:</label>
+        <div
+          class="btn-group btn-group-toggle"
+          ngbRadioGroup
+          name="serviceTicket"
+          [(ngModel)]="serviceTicket"
+        >
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="null" /> Any
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="true" /> Yes
+          </label>
+          <label ngbButtonLabel class="btn-primary btn-sm ">
+            <input ngbButton type="radio" [value]="false" /> No
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="col-md-9 pt-3 px-4">
+    <h3 class="mb-4">Search the D-Sheet</h3>
+    <div class="form-group col-sm-6">
+      <label for="inputDate" class="col-form-label text-right"
+        >Date Range:</label
+      >
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          (dateSelect)="onDateSelection($event, d)"
+          [displayMonths]="2"
+          [dayTemplate]="t"
+          [autoClose]="false"
+          [value]="range_date"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          (click)="dp.toggle(); isOpen = !isOpen"
+          readonly
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            (click)="d.toggle()"
+            type="button"
+          >
+            <i class="fas fa-calendar-alt"></i>
+          </button>
+        </div>
+      </div>
+      <ng-template #t let-date let-focused="focused">
+        <span
+          class="custom-day"
+          [class.focused]="focused"
+          [class.range]="isRange(date)"
+          [class.faded]="isHovered(date) || isInside(date)"
+          (mouseenter)="hoveredDate = date"
+          (mouseleave)="hoveredDate = null"
+        >
+          {{ date.day }}
+        </span>
+      </ng-template>
+    </div>
+    <div class="form-group col-sm-6">
+      <label for="inputEtag" class="col-form-label text-right">E-Tag:</label>
+      <textarea
+        class="form-control"
+        id="InputEtag"
+        rows="1"
+        [(ngModel)]="eTagModel"
+      ></textarea>
+    </div>
+    <div class="form-group col-sm-6">
+      <label for="inputEntry" class="col-form-label text-right">Entry:</label>
+      <textarea
+        class="form-control"
+        id="InputEntry"
+        rows="3"
+        [(ngModel)]="entryModel"
+      ></textarea>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <div *ngIf="!isLoading; then submitbtn; else loadingbtn"></div>
+      <ng-template #submitbtn>
+        <div class="text-left">
+          <button class="btn btn-primary" (click)="onSubmit()">
+            Search<i class="fas fa-search ml-2"></i>
+          </button>
+        </div>
+      </ng-template>
+      <ng-template #loadingbtn>
+        <div class="text-left">
+          <button class="btn btn-primary" disabled>
+            Searching...
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </button>
+        </div>
+      </ng-template>
+    </div>
+    <hr />
+    <button
+      class="btn btn-primary btn mb-3 mt-4"
+      *ngIf="searchService.hasInit"
+      (click)="openSubscribeModal()"
+    >
+      Subscribe to this search
+    </button>
+    <div *ngIf="!isOutputting; then outputbtn; else outputtingbtn"></div>
+    <ng-template #outputbtn>
+      <button
+        class="btn btn-secondary btn-sm mb-3 mt-4 mx-3"
+        *ngIf="searchService.hasInit"
+        (click)="outputToCsv()"
+      >
+        Output to .csv
+      </button>
+    </ng-template>
+    <ng-template #outputtingbtn>
+      <button
+        class="btn btn-secondary btn-sm mb-3 mt-4 mx-3"
+        *ngIf="searchService.hasInit"
+        disabled
+      >
+        Output to .csv
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+    </ng-template>
+    <app-results [results]="results"></app-results>
+    <div class="mx-auto center" *ngIf="results.count > results.results.length">
+      <div *ngIf="!isLoadingMore; then loadmorebtn; else loadingmorebtn"></div>
+      <ng-template #loadmorebtn>
+        <button class="btn btn-outline-primary" (click)="loadMore()">
+          Load More
+        </button>
+      </ng-template>
+      <ng-template #loadingmorebtn>
+        <button class="btn btn-outline-primary" disabled>
+          Loading More...
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

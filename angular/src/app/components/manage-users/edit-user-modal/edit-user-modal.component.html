@@ -1,0 +1,208 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ heading }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <span class="font-weight-bold">Name: </span>{{ user.displayName }} <br />
+      <span *ngIf="dbUser"
+        ><span class="font-weight-bold">Email: </span
+        >{{ dbUser.email ? dbUser.email : 'No email address' }} <br
+      /></span>
+    </p>
+
+    <button
+      *ngIf="(!dbUser && !willDelete) || (!dbUser && !loadedUser)"
+      class="btn btn-primary "
+      (click)="onCreate()"
+    >
+      Create User
+    </button>
+
+    <button
+      *ngIf="!dbUser && willDelete && loadedUser"
+      class="btn btn-primary"
+      (click)="loadUser()"
+    >
+      Undo Deletion
+    </button>
+    <div *ngIf="dbUser">
+      <h5 class="font-weight-bold">Roles:</h5>
+      <div class="form-group flex">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [(ngModel)]="admin"
+            (change)="onAdminChange()"
+          />
+        </div>
+        <div class="text-left">Admin.</div>
+      </div>
+      <h5 class="font-weight-bold">Permissions.</h5>
+      <form [formGroup]="rolesForm">
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="receiveTexts"
+            />
+          </div>
+          <div class="text-left">Can receive text notifications.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="gridCheck1"
+              formControlName="manageLookups"
+            />
+          </div>
+          <div class="text-left">Can manage lookups.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="manageUsers"
+            />
+          </div>
+          <div class="text-left">Can manage users.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="deleteEntry"
+            />
+          </div>
+          <div class="text-left">Can delete entries.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="editEntry"
+            />
+          </div>
+          <div class="text-left">Can edit entries.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="addNote"
+            />
+          </div>
+          <div class="text-left">Can add notes to entries.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="addSubToOtherUser"
+            />
+          </div>
+          <div class="text-left">Can make subscriptions for other users.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="importHistoricalData"
+            />
+          </div>
+          <div class="text-left">Can import historical data.</div>
+        </div>
+        <div class="form-group flex">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="canCreateSharedSub"
+            />
+          </div>
+          <div class="text-left">Can create shared subscriptions.</div>
+        </div>
+      </form>
+      <hr />
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-block"
+        (click)="onDelete()"
+      >
+        Delete User
+      </button>
+      <section class="mt-3">
+        <h3>Subscriptions</h3>
+        <hr />
+        <h4>Personal</h4>
+        <app-subscription
+          *ngFor="let sub of dbUser.subs"
+          [sub]="sub"
+          [challenge]="false"
+          (onDelete)="removeSubFromUser($event)"
+        ></app-subscription>
+        <div *ngIf="!dbUser.subs.length">
+          <p>This user has no personal subscriptions. <br /></p>
+        </div>
+        <hr />
+        <h4>Shared</h4>
+        <app-subscription
+          *ngFor="let sub of dbUser.sharedSubs"
+          [sub]="sub"
+          [challenge]="false"
+          (onDelete)="removeSharedSubFromUser($event)"
+        >
+        </app-subscription>
+        <div *ngIf="!dbUser.sharedSubs.length">
+          <p>
+            This user has no shared subscriptions.
+          </p>
+        </div>
+        <button class="btn btn-primary mt-3" (click)="openSharedSubModal()">
+          Add shared subscriptions
+        </button>
+      </section>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-primary btn-block"
+      *ngIf="!saving"
+      (click)="onSave()"
+    >
+      Apply Changes
+    </button>
+    <button
+      type="button"
+      *ngIf="saving"
+      class="btn btn-outline-primary btn-block"
+      disabled
+    >
+      Saving
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </button>
+  </div>
+</div>

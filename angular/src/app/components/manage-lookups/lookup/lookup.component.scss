@@ -1,0 +1,21 @@
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.scrollable {
+  height: 200px;
+  width: 300px;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+.sort-btn {
+  margin-bottom: 0.5rem;
+  float: right;
+}
+
+.alpha-sorted {
+  color: rgb(255, 255, 255);
+  background-color: rgb(77, 160, 255);
+}

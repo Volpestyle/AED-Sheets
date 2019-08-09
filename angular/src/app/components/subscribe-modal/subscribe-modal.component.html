@@ -1,0 +1,111 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">
+    {{ heading }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group" *ngIf="options.canEnterName">
+    <label for="subName">Subscription name:</label>
+    <div class="input-group">
+      <input
+        id="subName"
+        type="text"
+        class="form-control"
+        [(ngModel)]="subName"
+      />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nType">Notification Type:</label>
+    <div
+      class="btn-group btn-group-toggle"
+      ngbRadioGroup
+      name="nType"
+      [(ngModel)]="nType"
+      (change)="onTypeChange()"
+    >
+      <label ngbButtonLabel class="btn-primary btn-sm">
+        <input ngbButton type="radio" [value]="'email'" /> Email
+      </label>
+      <label
+        ngbButtonLabel
+        class="btn-primary btn-sm"
+        *ngIf="rolesService.auths.get('receiveTexts')"
+      >
+        <input ngbButton type="radio" [value]="'text'" /> Text
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="subName">Notification Frequency:</label>
+    <div class="input-group" *ngIf="nType === 'email'">
+      <select class="custom-select" [(ngModel)]="nFreq">
+        <option [value]="'Immediate'"> Immediate</option>
+        <option [value]="'Daily'"> Daily</option>
+        <option [value]="'Weekly'"> Weekly</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="nType === 'text'">
+      <select class="custom-select" [(ngModel)]="nFreq" disabled>
+        <option [value]="'Immediate'" selected> Immediate</option>
+      </select>
+    </div>
+  </div>
+  <div
+    class="form-group"
+    *ngIf="
+      rolesService.auths.get('addSubToOtherUser') &&
+      options.canAddToOtherUser &&
+      !isShared
+    "
+  >
+    <label for="subName">User to receive subscription:</label>
+    <div class="input-group">
+      <select
+        class="custom-select"
+        [(ngModel)]="appliedUser"
+        [compareWith]="compareFn"
+      >
+        <option [ngValue]="user" *ngFor="let user of activeUsers">
+          {{ user.name }}</option
+        >
+      </select>
+    </div>
+  </div>
+  <div class="form-group" *ngIf="options.canCreateShared">
+    <div class="text-left">Create shared subscription:</div>
+    <div class="form-check">
+      <input
+        [(ngModel)]="isShared"
+        class="form-check-input"
+        type="checkbox"
+        id="isShared"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div *ngIf="!isSaving; then savebtn; else savingbtn"></div>
+  <ng-template #savebtn>
+    <button type="button" class="btn btn-outline-primary" (click)="onSave()">
+      Save
+    </button>
+  </ng-template>
+  <ng-template #savingbtn>
+    <button class="btn btn-outline-primary btn-sm mb-3 mt-4" disabled>
+      Saving...
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </button>
+  </ng-template>
+</div>

@@ -1,0 +1,11 @@
+<div class="h-100 container-fluid">
+  <h3 class="mt-2">Single D-Sheet View</h3>
+  <div class="mt-4">
+    <app-result
+      [result]="entry"
+      *ngIf="entry && entry.isDeleted === false"
+      (onDelete)="delete()"
+    ></app-result>
+    <h4 *ngIf="entry.isDeleted === true">This entry has been deleted.</h4>
+  </div>
+</div>

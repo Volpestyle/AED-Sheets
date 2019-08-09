@@ -1,0 +1,16 @@
+<div *ngIf="searchService.hasInit">
+  <div>
+    <h3 class="mb-4 results-header">
+      Results:
+      <span class="text-muted">({{ resultsCount }}) found.</span>
+    </h3>
+
+    <div class="container-fluid">
+      <app-result
+        *ngFor="let result of _results"
+        [result]="result"
+        (onDelete)="removeDeleted($event)"
+      ></app-result>
+    </div>
+  </div>
+</div>

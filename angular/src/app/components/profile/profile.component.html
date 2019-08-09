@@ -1,0 +1,137 @@
+<div class="container mt-3" *ngIf="user">
+  <section class="jumbotron">
+    <h3>Your Profile</h3>
+    <hr />
+    <h4>Hello, {{ user.name }}</h4>
+    <h5>
+      {{
+        user.email
+          ? user.email
+          : 'There is no email associate with this account.'
+      }}
+    </h5>
+    <div class="phone-num" *ngIf="user.phoneNumber">
+      <h5>{{ user.phoneNumber }}</h5>
+      <button class="btn btn-danger btn-sm ml-3" (click)="deletePhone()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+    <div *ngIf="!user.phoneNumber">
+      <div class="form-group" *ngIf="enterPhone">
+        <label for="tel-input" class="col-form-label">Phone:</label>
+        <div class="row">
+          <div class="col-4">
+            <input
+              class="form-control"
+              type="tel"
+              id="tel-input"
+              [(ngModel)]="phoneInput"
+              (ngModelChange)="onPhoneChange($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-primary btn-sm mt-2"
+        *ngIf="!enterPhone && rolesService.auths.get('receiveTexts')"
+        (click)="enterPhone = true"
+      >
+        Add your phone number
+      </button>
+      <button
+        class="btn btn-primary btn-sm mt-2"
+        *ngIf="enterPhone"
+        (click)="savePhone()"
+      >
+        Save
+      </button>
+      <button
+        class="btn btn-secondary btn-sm mt-2 ml-2"
+        *ngIf="enterPhone"
+        (click)="enterPhone = false"
+      >
+        Cancel
+      </button>
+    </div>
+  </section>
+  <section class="jumbotron">
+    <h3>Your Subscriptions</h3>
+    <hr />
+    <h4>Personal</h4>
+    <app-subscription
+      *ngFor="let sub of user.subs"
+      [sub]="sub"
+      (onDelete)="removeSubFromUser($event)"
+    ></app-subscription>
+    <div *ngIf="!user.subs.length">
+      <p>
+        You have no personal subscriptions. <br />
+        Add personal subscriptions via the search page.
+      </p>
+    </div>
+    <hr />
+    <h4>Shared</h4>
+    <app-subscription
+      *ngFor="let sub of user.sharedSubs"
+      [sub]="sub"
+      [challenge]="true"
+      (onDelete)="removeSharedSubFromUser($event)"
+    ></app-subscription>
+    <div *ngIf="!user.sharedSubs.length">
+      <p>
+        You have no shared subscriptions. <br />
+        Add shared subscriptions via the button below.
+      </p>
+    </div>
+    <button class="btn btn-primary mt-3" (click)="openSharedSubModal()">
+      Add shared subscriptions
+    </button>
+  </section>
+  <section
+    class="jumbotron"
+    *ngIf="
+      rolesService.auths.get('manageLookups') ||
+      rolesService.auths.get('manageUsers')
+    "
+  >
+    <h3>Admin Tools</h3>
+    <hr />
+    <button
+      class="btn btn-primary"
+      routerLink="/manage-lookups"
+      *ngIf="rolesService.auths.get('manageLookups')"
+    >
+      Manage Lookups
+    </button>
+    <button
+      class="btn btn-primary ml-2"
+      routerLink="/manage-users"
+      *ngIf="rolesService.auths.get('manageUsers')"
+    >
+      Manage Users
+    </button>
+    <button
+      class="btn btn-primary ml-2"
+      routerLink="/import-data"
+      *ngIf="rolesService.auths.get('importHistoricalData')"
+    >
+      Import Historical Data
+    </button>
+    <button
+      class="btn btn-primary ml-2"
+      routerLink="/assign-shared-sub"
+      *ngIf="rolesService.auths.get('assignSharedSub')"
+    >
+      Assign Shared Subscription
+    </button>
+    <hr />
+    <h4>All Shared Subscriptions</h4>
+    <h5 *ngIf="!sharedSubs.length">None</h5>
+    <app-subscription
+      *ngFor="let sub of sharedSubs"
+      [sub]="sub"
+      (onDelete)="deleteSharedSub($event)"
+    >
+    </app-subscription>
+  </section>
+</div>

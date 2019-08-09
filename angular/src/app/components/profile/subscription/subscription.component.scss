@@ -1,0 +1,21 @@
+.sub {
+  padding: 1rem;
+  background-color: rgb(224, 224, 224);
+  border-radius: 10px;
+}
+
+.inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.btn-danger {
+  float: right;
+}
+p {
+  font-size: 0.9rem;
+}
+
+.name {
+  font-size: 1.1rem;
+}

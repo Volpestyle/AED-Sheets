@@ -1,0 +1,147 @@
+<div class="container mt-3">
+  <h3 class="text-center">Assign Shared Subscription</h3>
+  <div>
+    <p>
+      Choose the file containing a comma separated list of first and last names
+      you'd like to apply the subscription to. <br />
+      (ex. John Doe, Bob Smith, etc...)
+    </p>
+    <div class="form-group flex mt-3 mb-3">
+      <div class="text-left font-weight-bold">File:</div>
+      <div class="input-group">
+        <div class="custom-file ml-3">
+          <input
+            type="file"
+            name="file"
+            class="custom-file-input"
+            id="importFile"
+            (change)="onFileChange($event.target.files)"
+          />
+          <label class="custom-file-label" for="importFile" #labelImport
+            >Choose file</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="names.length">
+      <div class="text-left font-weight-bold">Names:</div>
+      <span>{{ names.toString() }}</span>
+    </div>
+    <div class="mb-3">
+      <div class="text-left font-weight-bold">Subscription:</div>
+      <app-subscription
+        *ngIf="chosenSub"
+        [sub]="chosenSub"
+        (onDelete)="onRemove()"
+      >
+      </app-subscription>
+      <button
+        *ngIf="!chosenSub"
+        class="btn btn-primary"
+        (click)="open(content)"
+      >
+        Choose Subscription
+      </button>
+    </div>
+    <div class="mb-3">
+      <button
+        class="btn btn-primary "
+        [disabled]="!file || !chosenSub"
+        *ngIf="!isAssigning"
+        (click)="onAssign()"
+      >
+        Assign Subscription
+      </button>
+      <button class="btn btn-primary " disabled *ngIf="isAssigning">
+        Assigning...
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Choose Shared Subscription
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-shared-sub
+      *ngFor="let sub of sharedSubs"
+      [sub]="sub"
+      [singleSelect]="true"
+      (onChoose)="onChoose($event)"
+    >
+    </app-shared-sub>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="modal.dismiss()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #summary let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Summary
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      The chosen subscription was given to
+      <span class="font-weight-bold">{{ effectedUsers }} </span>
+      user(s).
+    </p>
+    <h5>Errors:</h5>
+    <p *ngIf="summaryInfo.invalid.length">
+      <span class="font-weight-bold"
+        >The following names could not be found as NewsFlex users: <br /></span
+      >{{ summaryInfo.invalid.toString() }}
+    </p>
+    <h5>Warnings:</h5>
+    <p *ngIf="summaryInfo.alreadyHadSub.length">
+      <span class="font-weight-bold"
+        >The following users already had the chosen subscription: <br /></span
+      >{{ summaryInfo.alreadyHadSub.toString() }}
+    </p>
+    <p *ngIf="summaryInfo.noEmail.length">
+      <span class="font-weight-bold"
+        >The following users have no email associated with their accounts. They
+        will not recieve emails until they do: <br /></span
+      >{{ summaryInfo.noEmail.toString() }}
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      (click)="modal.dismiss()"
+    >
+      close
+    </button>
+  </div>
+</ng-template>

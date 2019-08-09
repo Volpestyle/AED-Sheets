@@ -1,0 +1,27 @@
+<h6 class="font-weight-bold mt-3">Notes:</h6>
+<ul class="list-group scrollable">
+  <li class="list-group-item note" *ngFor="let note of notes">
+    <div class="text-right note-delete">
+      <button class="btn btn-danger btn-circle" (click)="deleteNote(note._id)">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <span>{{ utilService.formatDate(note.createdAt, dateOptions) }}</span>
+    <span class="font-weight-bold"> {{ note.author }} :</span>
+    {{ note.content }}
+  </li>
+</ul>
+<div class="form-group mt-2">
+  <label for="exampleFormControlTextarea1">New Note:</label>
+  <div class="flex">
+    <textarea
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="1"
+      [(ngModel)]="newNote"
+    ></textarea>
+    <button class="btn btn-outline-primary btn-sm ml-2" (click)="onSubmit()">
+      Submit
+    </button>
+  </div>
+</div>

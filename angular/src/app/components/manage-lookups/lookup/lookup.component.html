@@ -1,0 +1,33 @@
+<div class="flex">
+  <h5>{{ lookup.displayName }}</h5>
+
+  <button
+    class="btn sort-btn"
+    (click)="this.isAlphaSorted = !this.isAlphaSorted"
+    [ngClass]="{ 'alpha-sorted': this.isAlphaSorted }"
+  >
+    <i class="fas fa-sort-alpha-down"></i>
+  </button>
+</div>
+<ul class="list-group scrollable">
+  <li class="list-group-item">
+    <div class="flex">
+      <input
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="1"
+        [(ngModel)]="newVal"
+      />
+      <button class="btn btn-outline-primary btn-sm ml-2" (click)="addVal()">
+        Add
+      </button>
+    </div>
+  </li>
+  <app-lookup-val
+    *ngFor="let val of lookup.vals.reverse()"
+    [lookupValue]="val"
+    (onDelete)="delete($event)"
+    (onSave)="save($event)"
+  >
+  </app-lookup-val>
+</ul>

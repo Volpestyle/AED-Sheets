@@ -1,0 +1,17 @@
+<div class="container mt-3">
+  <h3 class="text-center">Manage Lookups</h3>
+  <div class="lookups">
+    <div
+      class="lookup border"
+      *ngFor="let lookup of lookupsService.sortedLookups.list"
+    >
+      <app-lookup [lookup]="lookup"></app-lookup>
+    </div>
+    <div
+      class="lookup border"
+      *ngFor="let lookup of lookupsService.sortedLookups.range"
+    >
+      <app-range-lookup [lookup]="lookup"></app-range-lookup>
+    </div>
+  </div>
+</div>

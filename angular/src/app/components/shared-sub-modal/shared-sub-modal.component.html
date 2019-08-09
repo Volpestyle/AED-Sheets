@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">
+    {{ heading }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <app-shared-sub
+    *ngFor="let sub of sharedSubs"
+    [sub]="sub"
+    [added]="userSharedIds.includes(sub._id)"
+    (onAdd)="onAddSub($event)"
+  >
+  </app-shared-sub>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-primary"
+    (click)="activeModal.dismiss()"
+  >
+    Close
+  </button>
+</div>

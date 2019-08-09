@@ -1,0 +1,28 @@
+<li class="list-group-item">
+  <div *ngIf="isEditing; then editMode; else viewMode"></div>
+  <ng-template #editMode
+    ><input
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="1"
+      [(ngModel)]="newVal"/>
+    <div class="text-right val-btns">
+      <button class="btn save-btn" (click)="save()">
+        <i class="fas fa-save"></i>
+      </button>
+      <button class="btn del-btn" (click)="cancel()">
+        <i class="fas fa-times"></i>
+      </button></div
+  ></ng-template>
+  <ng-template #viewMode>
+    {{ lookupValue.title ? lookupValue.title : lookupValue.val }}
+    <div class="text-right val-btns">
+      <button class="btn edit-btn" (click)="edit()">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="btn del-btn" (click)="delete()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </ng-template>
+</li>

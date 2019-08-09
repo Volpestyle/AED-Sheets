@@ -1,0 +1,67 @@
+<h5>{{ lookup.displayName }}</h5>
+<ul class="list-group scrollable">
+  <li class="list-group-item">
+    <div class="text-center">
+      <button class="btn btn-outline-primary btn-sm" (click)="open(content)">
+        Create new range lookup
+      </button>
+    </div>
+  </li>
+  <app-range-lookup-val
+    *ngFor="let val of lookup.vals"
+    [lookupValue]="val"
+    (onDelete)="delete($event)"
+  >
+  </app-range-lookup-val>
+</ul>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Create new {{ lookup.displayName | lowercase }} lookup value
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="inputPassword3" class="col-form-label">Greater than:</label>
+      <ngb-timepicker
+        name="gte"
+        [(ngModel)]="gteVal"
+        [seconds]="seconds"
+        [disabled]="gteInput"
+      >
+      </ngb-timepicker>
+
+      <label for="inputPassword3" class=" col-form-label">Less than:</label>
+      <ngb-timepicker
+        name="lte"
+        [(ngModel)]="lteVal"
+        [seconds]="seconds"
+        [disabled]="lteInput"
+      >
+      </ngb-timepicker>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="gridCheck1"
+          [(ngModel)]="lteInput"
+        />
+        <label class="form-check-label" for="gridCheck1">
+          No limit
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-primary btn-block"
+      (click)="onSubmit()"
+    >
+      Create
+    </button>
+  </div>
+</ng-template>

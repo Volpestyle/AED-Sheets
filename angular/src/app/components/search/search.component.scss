@@ -1,0 +1,45 @@
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+
+.sidebar {
+  position: relative;
+}
+
+.sidebar-sticky {
+}
+
+.btn-group {
+  width: 100%;
+  box-sizing: content-box;
+  overflow: hidden;
+
+  label {
+    font-size: 0.8rem;
+    padding: 2px 2px;
+    cursor: pointer;
+  }
+  input {
+    width: 10px;
+  }
+}
+.center {
+  width: auto;
+  text-align: center;
+  padding-bottom: 1rem;
+}
