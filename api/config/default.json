@@ -1,0 +1,33 @@
+{
+  "root_url": "",
+  "api": {
+    "v1": {
+      "url": "",
+      "loginExt": ""
+    }
+  },
+  "jwt": {
+    "secret": "poo"
+  },
+  "mongodb": {
+    "uri": "mongodb://localhost:4202/dsheets"
+  },
+  "elasticsearch": {
+    "host": "",
+    "port": ""
+  },
+  "email": {
+    "host": "",
+    "port": "",
+    "secure": "",
+    "user": "",
+    "pass": "",
+    "from": "",
+    "subject": ""
+  },
+  "twilio": {
+    "number": "6304329848",
+    "SID": "AC0caa3d1cc205960c3bde4003ddb681a5",
+    "auth-token": "a529200d5608bd34a861448343ac2e8b"
+  }
+}
