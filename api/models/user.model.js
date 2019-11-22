@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const queueItemSchema = new Schema({
   subName: String,
   subId: Schema.Types.ObjectId,
   subIsShared: Boolean,
-  entry: { type: Schema.Types.ObjectId, ref: 'Entry' },
+  entry: { type: Schema.Types.ObjectId, ref: "Entry" }
 });
 
 const subSchema = new Schema({
@@ -14,7 +14,7 @@ const subSchema = new Schema({
   freq: String,
   rawQuery: Schema.Types.Mixed,
   query: Schema.Types.Mixed,
-  author: String,
+  author: String
 });
 
 const userSchema = new Schema({
@@ -24,14 +24,14 @@ const userSchema = new Schema({
   email: String,
   phoneNumber: String,
   subs: [subSchema],
-  sharedSubs: [{ type: Schema.Types.ObjectId, ref: 'SharedSubs' }],
+  sharedSubs: [{ type: Schema.Types.ObjectId, ref: "SharedSubs" }],
   queues: {
     daily: [queueItemSchema],
-    weekly: [queueItemSchema],
-  },
+    weekly: [queueItemSchema]
+  }
 });
 
-const User = mongoose.model('User', userSchema);
-const SharedSub = mongoose.model('SharedSubs', subSchema);
+const User = mongoose.model("User", userSchema);
+const SharedSub = mongoose.model("SharedSubs", subSchema);
 
 module.exports = { User, SharedSub };

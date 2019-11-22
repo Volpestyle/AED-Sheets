@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-import { AuthService } from '../../services/auth/auth.service';
-import { ToastrService } from 'ngx-toastr';
-import { DataService } from 'src/app/services/data/data.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { User } from 'src/app/models/user';
-import { RolesService } from 'src/app/services/roles/roles.service';
-import { UtilService } from 'src/app/services/util/util.service';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { first } from "rxjs/operators";
+import { AuthService } from "../../services/auth/auth.service";
+import { ToastrService } from "ngx-toastr";
+import { DataService } from "src/app/services/data/data.service";
+import { UserService } from "src/app/services/user/user.service";
+import { User } from "src/app/models/user";
+import { RolesService } from "src/app/services/roles/roles.service";
+import { UtilService } from "src/app/services/util/util.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -27,13 +27,13 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     private rolesService: RolesService,
-    private utilService: UtilService,
+    private utilService: UtilService
   ) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      username: ["", Validators.required],
+      password: ["", Validators.required]
     });
   }
 
@@ -44,9 +44,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log(this.loginForm.value);
-    if (this.loginForm.status == 'VALID') {
+    if (this.loginForm.status == "VALID") {
       this.isLoading = true;
-      let encodedPassword = btoa(this.form.password.value);
+      let encodedPassword = this.form.password.value; // btoa(this.form.password.value);
       this.authService
         .login(this.form.username.value, encodedPassword)
         .pipe(first())
@@ -56,11 +56,11 @@ export class LoginComponent implements OnInit {
             this.rolesService.getAuthorizations();
             this.authService.isLoggedIn = true;
             this.isLoading = false;
-            this.router.navigate(['/']);
+            this.router.navigate(["/"]);
             this.toastr.success(
-              '',
-              'Login Success',
-              this.utilService.msgOptions,
+              "",
+              "Login Success",
+              this.utilService.msgOptions
             );
           },
           err => {
@@ -68,16 +68,16 @@ export class LoginComponent implements OnInit {
             this.isLoading = false;
             this.toastr.error(
               `${err.error.msg}`,
-              'Login Error',
-              this.utilService.msgOptions,
+              "Login Error",
+              this.utilService.msgOptions
             );
-          },
+          }
         );
     } else {
       this.toastr.warning(
-        '',
-        'Please fill out all fields',
-        this.utilService.msgOptions,
+        "",
+        "Please fill out all fields",
+        this.utilService.msgOptions
       );
     }
   }

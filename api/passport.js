@@ -1,27 +1,50 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
-const passportJWT = require('passport-jwt');
+const passportJWT = require("passport-jwt");
 
 const JWTStrategy = passportJWT.Strategy;
 
-const CONFIG = require('config');
-const request = require('request');
+const CONFIG = require("config");
+const request = require("request");
+
+const { User } = require("./models/user.model");
 
 // For initial log in
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'username',
-      passwordField: 'password',
+      usernameField: "username",
+      passwordField: "password"
     },
     (username, password, done) => {
-      const credentials = {
+      User.findOne({ username: username })
+        .then(user => {
+          if (user) {
+            if (user.password === password) {
+              return done(null, user);
+            }
+          } else {
+            newUser = new User({
+              personId: 101,
+              username: username,
+              password: password
+            });
+            return done(null, newUser);
+          }
+        })
+        .catch(err => {
+          res.status(500).send({ error: "error occured" });
+        });
+
+      /* const credentials = {
         encoded: true,
         username,
         password,
-        loginType: 'active directory',
-      };
+        loginType: "active directory"
+      };*/
+
+      /*
       const newsFlexOptions = {
         method: 'POST',
         url: CONFIG.get('api.url') + CONFIG.get('api.loginExt'),
@@ -47,9 +70,11 @@ passport.use(
         // this shouldn't happen.
         console.log('Auth: Failed. Login was 200 but no user was in resp body');
         return done(null, false, 'Please try again');
+        
       });
-    },
-  ),
+      */
+    }
+  )
 );
 
 const cookieExtractor = req => {
@@ -64,8 +89,8 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: cookieExtractor,
-      secretOrKey: CONFIG.get('jwt.secret'),
+      secretOrKey: CONFIG.get("jwt.secret")
     },
-    (jwtPayload, done) => done(null, jwtPayload),
-  ),
+    (jwtPayload, done) => done(null, jwtPayload)
+  )
 );
