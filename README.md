@@ -6,7 +6,7 @@ time at NPR, the system in place to log incidents was running on an outdated tec
 The full documentation of my implementation that I shared with my team can be found in pdf form inside this repo. (It was written in Confluence and upon 
 export has experienced some small formatting errors)
 
-Screenshots
+## Screenshots
 ![search](/screenshots/AED-sheets_screenshot1.png)
 ![profile](/screenshots/AED-sheets_screenshot2.png)
 ![manage lookups](/screenshots/AED-sheets_screenshot3.png)
