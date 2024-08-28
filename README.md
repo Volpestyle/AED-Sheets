@@ -1,4 +1,4 @@
-# AED-Sheets
+# Audio Engineering Discrepancy Logger
 In summer 2019 I interned at National Public Radio (NPR) as a web software developer, and ended up getting the opportunity to build them a whole new web app on a MEAN stack! (MongoDB, Express JS, Angular, Node JS)
 ## Description
 Audio engineers at NPR like to keep track of all technical difficulties that are encountered during production. Before my
